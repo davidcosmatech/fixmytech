@@ -5,7 +5,7 @@
 Built to be simple, fast, and useful — no accounts, no ads, no fluff.
 
 🌐 Live demo (GitHub Pages):  
-https://FixMyTech.github.io/fixmytech/
+[https://FixMyTech.github.io/fixmytech/](https://github.com/YOUR-USERNAME/fixmytech.git)
 
 ---
 

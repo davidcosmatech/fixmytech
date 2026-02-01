@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FixMyTech – PC & Laptop Help</title>
+
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #e5e7eb;
+  --accent: #38bdf8;
+}
+
+.light {
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #0f172a;
+  --accent: #0284c7;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  background: var(--accent);
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.card {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.save {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  margin-top: 10px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  opacity: 0.8;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h2>🛠 FixMyTech</h2>
+  <button onclick="toggleTheme()">🌙 / ☀️</button>
+</header>
+
+<div class="container">
+
+<input type="text" id="search" placeholder="Search PC problem or Windows error code..." onkeyup="searchFixes()">
+
+<div id="results"></div>
+
+<h2>⭐ Favourite Fixes</h2>
+<div id="favs"></div>
+
+<h2>🤖 AI Helper</h2>
+<div class="card">
+  <p>Describe your problem:</p>
+  <input type="text" id="aiInput" placeholder="e.g. PC slow after update">
+  <button onclick="aiHelp()">Get Suggestion</button>
+  <p id="aiOutput"></p>
+</div>
+
+<h2>📞 Contact</h2>
+<div class="card">
+  <p>Need real help?</p>
+  <a href="https://wa.me/447538533646" target="_blank">
+    👉 Chat on WhatsApp
+  </a>
+</div>
+
+</div>
+
+<footer>
+  FixMyTech © 2026 • Built by David
+</footer>
+
+<script>
+const fixes = [
+  {
+    title: "PC Running Slow",
+    text: "Disable startup apps, uninstall unused software, scan for malware."
+  },
+  {
+    title: "Laptop Overheating",
+    text: "Clean fans, replace thermal paste, use cooling pad."
+  },
+  {
+    title: "Windows Error 0x80070057",
+    text: "Run Windows Update troubleshooter, check disk for errors."
+  },
+  {
+    title: "Blue Screen (BSOD)",
+    text: "Update drivers, check RAM, uninstall recent updates."
+  },
+  {
+    title: "No Internet Connection",
+    text: "Restart router, reset network settings, update drivers."
+  }
+];
+
+const results = document.getElementById("results");
+const favs = document.getElementById("favs");
+
+function renderFixes(list) {
+  results.innerHTML = "";
+  list.forEach((f, i) => {
+    results.innerHTML += `
+      <div class="card">
+        <h3>${f.title}</h3>
+        <p>${f.text}</p>
+        <button class="save" onclick="saveFav(${i})">⭐ Save</button>
+      </div>`;
+  });
+}
+
+function searchFixes() {
+  const q = search.value.toLowerCase();
+  renderFixes(fixes.filter(f => f.title.toLowerCase().includes(q)));
+}
+
+function saveFav(i) {
+  let saved = JSON.parse(localStorage.getItem("favs") || "[]");
+  saved.push(fixes[i]);
+  localStorage.setItem("favs", JSON.stringify(saved));
+  loadFavs();
+}
+
+function loadFavs() {
+  favs.innerHTML = "";
+  JSON.parse(localStorage.getItem("favs") || "[]")
+    .forEach(f => favs.innerHTML += `<div class="card"><h4>${f.title}</h4><p>${f.text}</p></div>`);
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light");
+}
+
+function aiHelp() {
+  const text = aiInput.value.toLowerCase();
+  let response = "Try restarting and checking updates.";
+  if (text.includes("slow")) response = "Disable startup apps and scan for malware.";
+  if (text.includes("overheat")) response = "Clean fans and improve airflow.";
+  if (text.includes("error")) response = "Search the error code and run system tools.";
+  aiOutput.innerText = response;
+}
+
+renderFixes(fixes);
+loadFavs();
+</script>
+</body>
+</html>
